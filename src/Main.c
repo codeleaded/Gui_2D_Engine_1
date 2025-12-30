@@ -16,23 +16,34 @@ Vector lines;
 Vec2 cam;
 float a;
 
+void CreateCube(Vector* v,Vec2 p,Vec2 d){
+	Vector_Push(&lines,(Line[]){ Line_New((Vec2){ p.x,p.y },(Vec2){ p.x + d.x,p.y }) });
+	Vector_Push(&lines,(Line[]){ Line_New((Vec2){ p.x,p.y },(Vec2){ p.x,p.y + d.y }) });
+	Vector_Push(&lines,(Line[]){ Line_New((Vec2){ p.x + d.x,p.y },(Vec2){ p.x + d.x,p.y + d.y }) });
+	Vector_Push(&lines,(Line[]){ Line_New((Vec2){ p.x,p.y + d.y },(Vec2){ p.x + d.x,p.y + d.y }) });
+}
+
 void Setup(AlxWindow* w){
 	cam = (Vec2){ 0.0f,0.0f };
 	a = 0.0f;
 
 	lines = Vector_New(sizeof(Line));
-	Vector_Push(&lines,(Line[]){ Line_New((Vec2){ -0.5f,1.0f },(Vec2){ 0.5f,1.0f }) });
-	Vector_Push(&lines,(Line[]){ Line_New((Vec2){ -0.5f,1.0f },(Vec2){ -0.5f,1.5f }) });
-	Vector_Push(&lines,(Line[]){ Line_New((Vec2){ 0.5f,1.0f },(Vec2){ 0.5f,1.5f }) });
+	CreateCube(&lines,(Vec2){ -3.0f,1.0f },(Vec2){ 1.0f,1.0f });
+	CreateCube(&lines,(Vec2){ -1.0f,1.0f },(Vec2){ 1.0f,1.0f });
+	CreateCube(&lines,(Vec2){ 1.0f,1.0f },(Vec2){ 1.0f,1.0f });
+	CreateCube(&lines,(Vec2){ 3.0f,1.0f },(Vec2){ 1.0f,1.0f });
 }
 
 void Update(AlxWindow* w){
-	const Vec2 front = Vec2_Mulf(Vec2_OfAngle(a),1.0f * w->ElapsedTime);
+	const Vec2 front = Vec2_Mulf(Vec2_OfAngle(a - 2 * F32_PI025),1.0f * w->ElapsedTime);
 
-	if(Stroke(ALX_KEY_W).PRESSED) cam = Vec2_Add(cam,front);
-	if(Stroke(ALX_KEY_S).PRESSED) cam = Vec2_Sub(cam,front);
-	if(Stroke(ALX_KEY_A).PRESSED) a -= F32_PI * w->ElapsedTime;
-	if(Stroke(ALX_KEY_D).PRESSED) a += F32_PI * w->ElapsedTime;
+	if(Stroke(ALX_KEY_W).DOWN) cam = Vec2_Add(cam,front);
+	if(Stroke(ALX_KEY_S).DOWN) cam = Vec2_Sub(cam,front);
+	if(Stroke(ALX_KEY_A).DOWN) cam = Vec2_Add(cam,Vec2_Perp(front));
+	if(Stroke(ALX_KEY_D).DOWN) cam = Vec2_Sub(cam,Vec2_Perp(front));
+
+	if(Stroke(ALX_KEY_LEFT).DOWN) a += F32_PI * w->ElapsedTime;
+	if(Stroke(ALX_KEY_RIGHT).DOWN) a -= F32_PI * w->ElapsedTime;
 
 	Clear(BLACK);
 	
@@ -45,16 +56,50 @@ void Update(AlxWindow* w){
 		
 		const Line trans = Line_New(AffineTransform_Calc(&at,l->s),AffineTransform_Calc(&at,l->e));
 		
-
 		Line proj = trans;
 		proj.s.x /= proj.s.y;
 		proj.e.x /= proj.e.y;
+
+		if(proj.s.y < 0.0f || proj.e.y < 0.0f) continue;
 		
-		const float sx = proj.s.x * GetWidth() / 2;
-		const float ex = proj.e.x * GetWidth() / 2;
+		const float sx = (proj.s.x + 1.0f) * GetWidth() / 2;
+		const float ex = (proj.e.x + 1.0f) * GetWidth() / 2;
 
-		Line_RenderX(WINDOW_STD_ARGS,(Vec2){ sx,GetHeight() / 2 },(Vec2){ ex,GetHeight() / 2 },WHITE,1.0f);
+		const float m = GetHeight() / 2;
+		const float sy = (GetHeight() / 2) / proj.s.y;
+		const float ey = (GetHeight() / 2) / proj.e.y;
 
+		//Line_RenderX(WINDOW_STD_ARGS,(Vec2){ sx,GetHeight() / 2 },(Vec2){ ex,GetHeight() / 2 },WHITE,1.0f);
+
+		Triangle_RenderX(
+			WINDOW_STD_ARGS,
+			(Vec2){ sx,m - sy },
+			(Vec2){ sx,m + sy },
+			(Vec2){ ex,m + ey },
+			WHITE
+		);
+		Triangle_RenderX(
+			WINDOW_STD_ARGS,
+			(Vec2){ sx,m - sy },
+			(Vec2){ ex,m + ey },
+			(Vec2){ ex,m - ey },
+			WHITE
+		);
+
+		//Triangle_RenderXWire(
+		//	WINDOW_STD_ARGS,
+		//	(Vec2){ sx,m - sy },
+		//	(Vec2){ sx,m + sy },
+		//	(Vec2){ ex,m + ey },
+		//	WHITE,1.0f
+		//);
+		//Triangle_RenderXWire(
+		//	WINDOW_STD_ARGS,
+		//	(Vec2){ sx,m - sy },
+		//	(Vec2){ ex,m + ey },
+		//	(Vec2){ ex,m - ey },
+		//	WHITE,1.0f
+		//);
 
 		//RenderTriangleWire(
 		//	((Vec2){ triProjected.p[0].x,triProjected.p[0].y }),
@@ -66,11 +111,11 @@ void Update(AlxWindow* w){
 }
 
 void Delete(AlxWindow* w){
-	Vector_Free(&meshCube.tris);
+	Vector_Free(&lines);
 }
 
 int main(){
-    if(Create("3D Test Tex",2500,1200,1,1,Setup,Update,Delete))
+    if(Create("2D Engine",2500,1200,1,1,Setup,Update,Delete))
         Start();
     return 0;
 }
