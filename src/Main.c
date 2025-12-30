@@ -71,35 +71,35 @@ void Update(AlxWindow* w){
 
 		//Line_RenderX(WINDOW_STD_ARGS,(Vec2){ sx,GetHeight() / 2 },(Vec2){ ex,GetHeight() / 2 },WHITE,1.0f);
 
-		Triangle_RenderX(
-			WINDOW_STD_ARGS,
-			(Vec2){ sx,m - sy },
-			(Vec2){ sx,m + sy },
-			(Vec2){ ex,m + ey },
-			WHITE
-		);
-		Triangle_RenderX(
-			WINDOW_STD_ARGS,
-			(Vec2){ sx,m - sy },
-			(Vec2){ ex,m + ey },
-			(Vec2){ ex,m - ey },
-			WHITE
-		);
-
-		//Triangle_RenderXWire(
+		//Triangle_RenderX(
 		//	WINDOW_STD_ARGS,
 		//	(Vec2){ sx,m - sy },
 		//	(Vec2){ sx,m + sy },
 		//	(Vec2){ ex,m + ey },
-		//	WHITE,1.0f
+		//	WHITE
 		//);
-		//Triangle_RenderXWire(
+		//Triangle_RenderX(
 		//	WINDOW_STD_ARGS,
 		//	(Vec2){ sx,m - sy },
 		//	(Vec2){ ex,m + ey },
 		//	(Vec2){ ex,m - ey },
-		//	WHITE,1.0f
+		//	WHITE
 		//);
+
+		Triangle_RenderXWire(
+			WINDOW_STD_ARGS,
+			(Vec2){ sx,m - sy },
+			(Vec2){ sx,m + sy },
+			(Vec2){ ex,m + ey },
+			WHITE,1.0f
+		);
+		Triangle_RenderXWire(
+			WINDOW_STD_ARGS,
+			(Vec2){ sx,m - sy },
+			(Vec2){ ex,m + ey },
+			(Vec2){ ex,m - ey },
+			WHITE,1.0f
+		);
 
 		//RenderTriangleWire(
 		//	((Vec2){ triProjected.p[0].x,triProjected.p[0].y }),
