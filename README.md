@@ -1,193 +1,101 @@
-# Gui_2D_Engine_1
+# Project README
 
+## Overview
+This project is a 2D Engine written in C. It provides basic functionalities for creating, updating, and deleting graphical objects on a 2D canvas.
 
-## Project Overview
+## Features
+- Creating a window with specified dimensions.
+- Setting up a main loop to handle updates.
+- Basic event handling (not explicitly supported in the provided code but can be added).
+- Drawing simple shapes by projecting 2D coordinates.
 
-This project implements specialized functionality related to 2d_engine_1.
-
-## Core Components
-
-### Main Functionality
-- Implements core algorithms for 2d_engine_1
-- Efficient data structures
-- Optimized performance
-- Clean code organization
-
-### Technical Features
-- C/C++ implementation
-- Dynamic memory management
-- Platform-independent design
-- Real-time capable
-
-### Architecture
-- Module separation
-- Clear interface design
-- Proper abstraction layers
-- Extensible design
-
-## Use Cases
-- Production systems
-- Educational purposes
-- Research applications
-- Performance-critical operations
-
-## Performance Characteristics
-- Optimized algorithms
-- Efficient memory usage
-- Scalable architecture
-- Minimal overhead
-
-## Implementation Quality
-- Well-organized code
-- Meaningful naming
-- Proper error handling
-- Memory management
-
-## Build and Deployment
-- Standard C/C++ compilation
-- Makefile-based building
-- Cross-platform support
-- Easy integration
-
-
-## Building the Project
+## Project Structure
 
 ### Prerequisites
-- C/C++ Compiler (GCC, Clang, or MSVC)
+- C/C++ Compiler and Debugger (GCC, Clang)
 - Make utility
 - Standard development tools
+- Libraries needed:
+  - X11 for Linux (`libX11-dev`)
+  - Winmm and GDI32 for Windows (`mingw-w64` on Linux to compile for Windows)
+  - SDL2 for WebAssembly (if needed)
 
-### Build Steps
+## Build & Run
 
-1. Navigate to project directory:
+### Building for Linux
 ```bash
-cd Gui_2D_Engine_1
+cd <Project>
+make -f Makefile.linux all
 ```
 
-2. Build the project:
+#### Clean and Rebuild
+To clean the build directory and rebuild:
 ```bash
-make -f Makefile.(os) all
+make -f Makefile.linux clean
+make -f Makefile.linux all
 ```
 
-3. For clean rebuild:
+### Running on Linux
+After building, you can run the application with:
 ```bash
-make -f Makefile.(os) clean
-make -f Makefile.(os) all
+make -f Makefile.linux exe
 ```
 
-4. If there are ./bin and ./libs directories, build libs with:
+### Building for Windows
 ```bash
-make -f Makefile.(os) cleanlib
-make -f Makefile.(os) lib
+cd <Project>
+make -f Makefile.windows all
 ```
 
-### Build Options
+#### Clean and Rebuild
+To clean the build directory and rebuild:
 ```bash
-make -f Makefile.(os) all         # build output
-make -f Makefile.(os) do        # build + exe output
-make -f Makefile.(os) clean   # Remove build artifacts
+make -f Makefile.windows clean
+make -f Makefile.windows all
 ```
 
-## Running the Project
-
-Execute the compiled binary:
-
+### Running on Windows
+After building, you can run the application with:
 ```bash
-./build/Main(.exe)
+make -f Makefile.windows exe
 ```
 
-Or using make:
+### Building for Wine (Linux Cross Compile for Windows)
 ```bash
-make -f Makefile.(os) exe
+cd <Project>
+make -f Makefile.wine all
 ```
 
-## Project Organization
-
-```
-Gui_2D_Engine_1/
-├── src/
-│   ├── Main.c          # Entry point
-│   └── *.c             # Implementation files
-├── Makefile            # Build configuration
-└── README.md           # This file
+#### Clean and Rebuild
+To clean the build directory and rebuild:
+```bash
+make -f Makefile.wine clean
+make -f Makefile.wine all
 ```
 
-## Technical Details
+### Running on Wine
+After building, you can run the application with:
+```bash
+make -f Makefile.wine exe
+```
 
-### Language: C/C++
-- Performance-oriented
-- Direct hardware access where needed
-- Memory efficient
-- Widely portable
+### Building for WebAssembly (Emscripten)
+```bash
+cd <Project>
+make -f Makefile.web all
+```
 
-### Key Technologies
-- Standard C library
-- System-specific libraries as needed
-- Algorithm optimization
-- Efficient data structures
+#### Clean and Rebuild
+To clean the build directory and rebuild:
+```bash
+make -f Makefile.web clean
+make -f Makefile.web all
+```
 
-### Code Quality
-- Clean, readable implementation
-- Proper error handling
-- Resource management
-- Well-documented algorithms
+### Running on WebAssembly
+After building, you can run the application with:
+```bash
+make -f Makefile.web exe
+```
 
-## Development Notes
-
-### Architecture Decisions
-- Modular design for reusability
-- Efficient algorithms for performance
-- Clear separation of concerns
-- Extensible structure
-
-### Performance Optimizations
-- Algorithm efficiency
-- Memory layout optimization
-- Cache-conscious programming
-- Minimal overhead
-
-### Portability
-- Cross-platform compatible
-- Platform-specific optimizations where possible
-- Standard library usage
-- No external dependencies (where feasible)
-
-## Troubleshooting
-
-### Build Issues
-- Ensure compiler is installed
-- Check file paths and permissions
-- Verify Make installation
-- Review compiler error messages
-
-### Runtime Issues
-- Check input data validity
-- Verify file accessibility
-- Ensure sufficient memory
-- Review output format
-
-### Performance Issues
-- Check compiler optimization flags
-- Profile hot code paths
-- Review algorithm complexity
-- Consider input size
-
-## Future Improvements
-
-Potential enhancements:
-- Additional optimization opportunities
-- Extended functionality
-- Platform-specific optimizations
-- Performance profiling
-
-## References
-
-For technical background:
-- Algorithm textbooks
-- Computer science references
-- Language documentation
-- Online educational resources
-
----
-
-*Project implementing practical algorithms and data structures in C/C++*
+This README provides a clear overview of the project, its features, and how to build and run it for different platforms.
